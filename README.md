@@ -13,7 +13,7 @@ word2vec
 ├── README.md
 └── src
     ├── 1_cosine_similarity.py
-    ├── 2_gensim_demo.py
+    ├── 2_gensim_similarity.py
     └── 3_word2vec_similarity.py
 ```
 每个目录中均包含`data/`, `src/`, `README.md`三个文件，`data`为该知识点需要使用到的数据文件，`src`为相关的代码文件，

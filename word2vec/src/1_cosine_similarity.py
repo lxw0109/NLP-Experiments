@@ -4,9 +4,11 @@
 # Author: lxw
 # Date: 12/22/17 9:54 AM
 """
+使用TF-IDF算法提取文章关键词，并计算两篇文章的余弦相似度
+
 ### References
 [Word2Vec(一) - 余弦相似性数学原理](http://blog.chatbot.io/development/2017/06/14/cosine-similarity/)
-注意原文中有多处错误，
+**注意**: 原文中有多处错误
 
 主要思想：
 1) 使用TF-IDF算法，找出两篇文章的**关键词**
@@ -25,8 +27,7 @@ def get_keywords(article):
     """
     # 通过TF-IDF算法提取关键词
     res = jieba.analyse.extract_tags(sentence=article, topK=20, withWeight=True)    # 得到的tf-idf值是已经归一化了的，不需要再人工归一化(因为tf是做了归一化的)
-    # print(type(res))
-    # print(res)
+    # print(res)    # <list of tuple>
     return res
 
 
@@ -39,7 +40,7 @@ def get_tfidf_vectors(res1=None, res2=None):
     # 向量，可以使用list表示
     vector1 = []
     vector2 = []
-    # 词频，可以使用dict表示
+    # tf-idf 可以使用dict表示
     tf_idf1 = {i[0]: i[1] for i in res1}
     tf_idf2 = {i[0]: i[1] for i in res2}
 
@@ -78,19 +79,24 @@ def cosine_sim(vector1, vector2):
 
 def main():
     article1 = "我喜欢中国，也喜欢美国。"
-    # article2 = "我喜欢足球，不喜欢篮球。我喜欢足球，不喜欢篮球。我喜欢足球，不喜欢篮球。我喜欢足球，不喜欢篮球。"    # 0.61082950341129
+    # article2 = "我喜欢足球，不喜欢篮球。我喜欢足球，不喜欢篮球。我喜欢足球，不喜欢篮球。我喜欢足球，不喜欢篮球。"    # 0.610829503411293
     # article2 = "我喜欢足球，不喜欢喜欢喜欢篮球。"    # 0.7974529550358094
-    # article2 = "我喜欢足球，不喜欢篮球。"    # 0.61082950341129
-    article2 = "我好想你啊。"    # 0.0
+    article2 = "我喜欢足球，不喜欢篮球。"    # 0.610829503411293
+    # article2 = "我好想你啊。"    # 0.0
 
-    # 1. 得到词频向量
+    # 1) 使用TF-IDF算法，找出两篇文章的**关键词**
     res1 = get_keywords(article=article1)
     res2 = get_keywords(article=article2)
+
+    # 2) 每篇文章的关键词合并成一个集合，并得到每篇文章对于这个集合中的词的tf-idf值向量
     vector1, vector2 = get_tfidf_vectors(res1=res1, res2=res2)
 
-    # 相似度
+    # 3) 计算两个向量的余弦相似度，值越大就表示越相似
     print(cosine_sim(vector1=vector1, vector2=vector2))
-    # TODO: math.cos() vs. math.acos().
+    """
+    math.cos(x): Return the cosine of x radians.
+    math.acos(x): Return the arc cosine of x, in radians. [arc cosine: 反余弦]
+    """
 
 
 if __name__ == '__main__':
