@@ -10,12 +10,10 @@
 ```bash
 word2vec
 ├── data
-├── README.md
 └── src
-    ├── 1_cosine_similarity.py
-    ├── 2_gensim_similarity.py
+    ├── 1_tfidf_cos_similarity.py
+    ├── 2_gensim_word2vec_train.py
     └── 3_word2vec_similarity.py
 ```
-每个目录中均包含`data/`, `src/`, `README.md`三个文件，`data`为该知识点需要使用到的数据文件，`src`为相关的代码文件，
-`README.md`为说明文件。  
+每个目录中均包含`data/`, `src/`两个目录，`data/`为该知识点需要使用到的数据&模型文件，`src`为相关的代码文件。 
 对于`src/`目录而言，若该知识点涉及多个部分的代码实现，则将各文件按照`"序号_文件名"`的方式进行命名，以便于顺序查阅。 

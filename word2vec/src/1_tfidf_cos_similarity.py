@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # coding: utf-8
-# File: cosine_similarity.py
+# File: 1_tfidf_cos_similarity.py
 # Author: lxw
 # Date: 12/22/17 9:54 AM
 """
-使用TF-IDF算法提取文章关键词，并计算两篇文章的余弦相似度
+使用TF-IDF算法提取文章(句子)的关键词，并计算两篇文章(句子)的余弦相似度
 
 ### References
-[Word2Vec(一) - 余弦相似性数学原理](http://blog.chatbot.io/development/2017/06/14/cosine-similarity/)
-**注意**: 原文中有多处错误
+[Word2Vec(一)-余弦相似性数学原理](http://blog.chatbot.io/development/2017/06/14/cosine-similarity/)
+**注意**: 原文中有多处错误, 不推荐阅读原文T_T
 
 主要思想：
 1) 使用TF-IDF算法，找出两篇文章的**关键词**
