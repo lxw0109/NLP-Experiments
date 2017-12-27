@@ -1,5 +1,5 @@
 # NLP Experiments
-**自然语言处理(Natural Language Processing, NLP)** 相关基础理论的学习与代码实现(基于从新浪财经、东方财富、和讯网、人民网、中证网等网站爬取的新闻数据/Wiki-ZH数据/Sougou数据等数据集)。  
+**自然语言处理(Natural Language Processing, NLP)** 相关知识的学习与代码实现(基于从新浪财经、东方财富、和讯网、人民网、中证网等网站爬取的新闻数据/Wiki-ZH数据/Sougou数据等数据集)。  
 
 ## Requirements
 本项目所有代码实现均基于[Python3.6+](https://www.python.org/downloads/)完成，所需要的Python包如`requirements.txt`文件，
