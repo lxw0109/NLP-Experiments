@@ -38,8 +38,8 @@ def train_w2v():
     :return: model
     """
     sentences = word2vec.Text8Corpus("../data/corpus_seg.txt")    # 加载语料
-    model = word2vec.Word2Vec(sentences, size=200, min_count=1, window=5)    # 训练skip-gram模型
-    # TODO: 1. word2vec的参数意义  2. word2vec原理
+    model = word2vec.Word2Vec(sentences, size=200, min_count=1, window=10)    # 训练skip-gram模型
+    # NOTE: word2vec的参数意义和选择: https://github.com/lxw0109/NLPExperiments/blob/master/word2vec/doc/Learning%20Notes%20on%20word2vec.ipynb
     return model
 
     """
