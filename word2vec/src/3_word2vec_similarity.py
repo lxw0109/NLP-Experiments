@@ -49,7 +49,7 @@ class SimilarityCalculator:
         """
         def _vector(sentence):
             vectors = []
-            for _index, word in enumerate(sentence.split()):    # NOTE: `sentence` must be in form of segmentations.
+            for _index, word in enumerate(sentence.split()):    # NOTE: `sentence` must be in form of segmentations(space separated).
                 try:
                     word = word.strip()
                     if word:
