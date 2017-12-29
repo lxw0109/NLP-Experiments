@@ -63,8 +63,8 @@ class SegmentCorpus():
                 content = map(str.strip, content)
                 content = [item for item in content if item != ""]
                 content = " ".join(content) + "\n"
-                title_content = title + content
-                f1.write(title_content.encode("utf-8"))
+                _id_title_content = _id + "\n" + title + content
+                f1.write(_id_title_content.encode("utf-8"))
 
     # 1'. fetch 200w news from mysql.
     def fetch_mysql_news(self):
@@ -112,8 +112,8 @@ class SegmentCorpus():
                 content = map(str.strip, content)
                 content = [item for item in content if item != ""]
                 content = " ".join(content) + "\n"
-                title_content = title + content
-                f1.write(title_content.encode("utf-8"))
+                _id_title_content = _id + "\n" + title + content
+                f1.write(_id_title_content.encode("utf-8"))
 
     def _load_config(self):
         config = configparser.ConfigParser()
