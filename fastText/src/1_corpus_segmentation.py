@@ -9,6 +9,7 @@
 
 import configparser
 import jieba
+import re
 import pymongo
 import pymysql
 import time
@@ -68,34 +69,51 @@ class SegmentCorpus():
     # 1'. fetch 200w news from mysql.
     def fetch_mysql_news(self):
         """
+        处理截止到20171229日的资讯数据
         从mysql中【读取新闻->分词->写入文件】的操作太耗时了，所以把这个过程拆分开:先读取新闻写入到文件，然后在服务器上跑分词，并写入文件
         
-        Reference: [使用python遍历mysql中有千万行数据的大表](https://www.jianshu.com/p/80b81a68fd72)
+        Reference:
+        Method1: [使用python遍历mysql中有千万行数据的大表](https://www.jianshu.com/p/80b81a68fd72)
+        Method2: [PyMySQL: Query with large number of rows failing](https://stackoverflow.com/questions/13168869/pymysql-query-with-large-number-of-rows-failing)
         """
-        with open("../data/200w_news_id_title_content.txt", "wb") as f:
+        with open("../data/mnt_link/200w_news_id_title_content.txt", "wb") as f:
             sql = "SELECT id, title, content FROM {0};".format(self.mysql_table)
             try:
                 self.cursor.execute(sql)
-                results = self.cursor.fetchall()
-                for row in results:
+                while 1:
+                    row = self.cursor.fetchone()
+                    if not row:
+                        break
                     _id = row[0]
                     title = row[1].strip()
-                    content = row[2].strip()
+                    content = row[2].strip().replace("\r\n", "。").replace("\n", "。").replace("\r", "。")
+                    content = re.sub(r"。+", r"。", content)
                     f.write("{0}|lxw|{1}|lxw|{2}\n".format(_id, title, content).encode("utf-8"))
             except Exception as e:
                 print("Error: unable to fetch data. {}".format(e))
 
-    # 2'. 针对"../data/673w_news_title_content.txt"文件进行分词
+    # 2'. 针对"../data/mnt_link/200w_news_id_title_content.txt"文件进行分词
     def segment_mysql_news(self):
         jieba.load_userdict("../data/steel_industry_dict.txt")
-        f1 = open("../data/673w_news_title_content_seg.txt", "wb")
-        with open("../data/673w_news_title_content.txt") as f:
+        f1 = open("../data/mnt_link/200w_news_id_title_content_seg.txt", "wb")
+        with open("../data/mnt_link/200w_news_id_title_content.txt") as f:
             for line in f:
-                line = jieba.cut(line.strip())  # line: <generator object Tokenizer.cut at 0x7fccc3c88990>
-                line = map(str.strip, line)
-                line = [item for item in line if item != ""]
-                line = " ".join(line) + "\n"
-                f1.write(line.encode("utf-8"))
+                line_list = line.split("|lxw|")
+                if len(line_list) > 3:
+                    self.err_log.error(line)
+                    continue
+                _id, title, content = line_list[0], line_list[1], line_list[2]
+                title = jieba.cut(title)    # title: <generator object Tokenizer.cut at 0x7fccc3c88990>
+                title = map(str.strip, title)
+                title = [item for item in title if item != ""]
+                title = " ".join(title) + "\n"
+
+                content = jieba.cut(content)    # content: <generator object Tokenizer.cut at 0x7fccc3c88990>
+                content = map(str.strip, content)
+                content = [item for item in content if item != ""]
+                content = " ".join(content) + "\n"
+                title_content = title + content
+                f1.write(title_content.encode("utf-8"))
 
     def _load_config(self):
         config = configparser.ConfigParser()
@@ -109,8 +127,9 @@ class SegmentCorpus():
 
         # MySQL
         mysql = config["MySQL"]
-        mysql_conn = pymysql.connect(mysql["host"], mysql["user"], mysql["passwd"], mysql["db"])
-        self.cursor = mysql_conn.cursor()
+        mysql_conn = pymysql.connect(mysql["host"], mysql["user"], mysql["passwd"], mysql["db"], charset="utf8")   # NOTE: charset="utf8" is essential.
+        # self.cursor = mysql_conn.cursor()    # NOTE: the default cursor() CANNOT work for large number of records.
+        self.cursor = pymysql.cursors.SSCursor(mysql_conn)
         self.mysql_table = mysql["table"]
 
 
@@ -118,13 +137,16 @@ if __name__ == "__main__":
     start_time = time.time()
     sc = SegmentCorpus()
     # 1. fetch 673w news from mongo.
-    sc.fetch_mongo_news()
+    # sc.fetch_mongo_news()
 
     # 2. 针对"../data/mnt_link/673w_news_id_title_content.txt"文件进行分词
     # sc.segment_mongo_news()
 
     # 1'. fetch 200w news from mysql.
     # sc.fetch_mysql_news()
+
+    # 2'. 针对"../data/mnt_link/200w_news_id_title_content.txt"文件进行分词
+    sc.segment_mysql_news()
 
     end_time = time.time()
     print("Time cost:{0:.3f}".format(end_time - start_time))
