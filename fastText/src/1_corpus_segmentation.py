@@ -50,7 +50,7 @@ class SegmentCorpus():
         with open("../data/mnt_link/673w_news_id_title_content.txt") as f:
             for line in f:
                 line_list = line.split("|lxw|")
-                if len(line_list) > 3:
+                if len(line_list) < 3:
                     self.err_log.error(line)
                     continue
                 _id, title, content = line_list[0], line_list[1], line_list[2]
@@ -99,7 +99,7 @@ class SegmentCorpus():
         with open("../data/mnt_link/200w_news_id_title_content.txt") as f:
             for line in f:
                 line_list = line.split("|lxw|")
-                if len(line_list) > 3:
+                if len(line_list) < 3:
                     self.err_log.error(line)
                     continue
                 _id, title, content = line_list[0], line_list[1], line_list[2]
