@@ -4,13 +4,15 @@
 # Author: lxw
 # Date: 12/31/17 10:38 AM
 
+import time
+
 def main():
     count = 0
-    f1 = open("../../data/mnt_link/200w_news_only_title_content_seg.txt", "wb")
+    f1 = open("../../data/mnt_link/673w_news_only_title_content_seg.txt", "wb")
     # f1 = open("../../data/mnt_link/200w_news_only_title_content_seg.txt", "wb")
 
-    with open("../../data/mnt_link/200w_news_id_title_content_seg.txt") as f:
-    with open("../../data/mnt_link/200w_news_id_title_content_seg.txt") as f:
+    with open("../../data/mnt_link/673w_news_id_title_content_seg.txt") as f:
+    # with open("../../data/mnt_link/200w_news_id_title_content_seg.txt") as f:
         for line in f:
             count += 1
             if count == 4:
@@ -25,7 +27,8 @@ def main():
     f1.close()
 
 
-
-
 if __name__ == '__main__':
+    start_time = time.time()
     main()
+    end_time = time.time()
+    print("Time Cost:{0}".format(end_time - start_time))
