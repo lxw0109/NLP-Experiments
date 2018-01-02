@@ -12,6 +12,7 @@ Reference: https://pypi.python.org/pypi/fasttext
 `UnicodeDecodeError: 'utf8' codec can't decode byte 0x80 in position 32: invalid start byte`
 This is due to the fact that the fastText binary file also contains information from subword units, which can be used to compute word vectors for out-of-vocabulary words.
 解决方法参考：https://github.com/facebookresearch/fastText/issues/171. 但这种解决方法是使用`.vec`文件生成适配gensim的`.bin`文件，而且生成`.bin`文件的时间比较长，所以不推荐使用这种方法
+此处针对这种方法的模型导入和使用方法略
 """
 
 import fasttext
