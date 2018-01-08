@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 # coding: utf-8
-# File: use_fasttext_model.py
+# File: 2_use_fasttext_model.py
 # Author: lxw
 # Date: 1/2/18 6:07 PM
+
 """
-训练和使用fasttext模型
+### 注意：
 训练模型可以使用fasttext命令行工具进行(../doc/fastText_train.png)，也可以使用本文件中的方法训练。
+**但是**，使用fasttext命令行工具训练的模型，无法使用本文件使用的fasttext包导入。
+ 
+训练和使用fasttext模型
 Reference: https://pypi.python.org/pypi/fasttext
 
 当使用gensim导入fastText训练的模型文件时，总是提示下面的错误：
@@ -15,7 +19,7 @@ This is due to the fact that the fastText binary file also contains information 
 此处针对这种方法的模型导入和使用方法略
 """
 
-import fasttext
+import fasttext    # Reference: https://pypi.python.org/pypi/fasttext    # 这个包无法导入使用
 import time
 
 
@@ -41,6 +45,8 @@ def train_fasttext_model():
 
 # 2. Using the pre-trained model.
 def use_fasttext_model():
+    # 训练模型可以使用fasttext命令行工具进行(../doc/fastText_train.png)，也可以使用本文件使用的fasttext包训练。但是，
+    # 使用fasttext命令行工具训练的模型，无法使用本文件使用的fasttext包导入
     model = fasttext.load_model("../data/lxw_model_sg.bin", encoding="utf-8")
     # print(model.words)
     print(model["先生"])
@@ -52,7 +58,7 @@ def use_fasttext_model():
     print(model["先生"])
     print(model["刘晓伟"])   # OOV
     print(model["陈贺"])   # OOV
-    # NOTE: 简单的测试发现, 两个不同的模型针对OOV计算得到的向量竟然是一样的, 但非OOV的向量是不一样的。
+    # NOTE: 简单的测试发现, 两个不同的模型针对同一个OOV计算得到的向量是一样的(与pyfasttext包的情况相同，详情可参见3_use_fasttext_model), 非OOV的向量是不一样的。
 
 
 def main():

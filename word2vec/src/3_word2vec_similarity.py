@@ -78,9 +78,13 @@ class SimilarityCalculator:
 
 
 def run():
-    sc = SimilarityCalculator("../data/word_vector.bin")
+    sc = SimilarityCalculator("../data/673w_w2v.bin")
     sentences = ["登录 不 上去 怎么办 ", "扫码 一直 不 能 成功 怎么办"]    # NOTE: `sentences` must be in form of segmentations.
-    print(sc.similarity_distance(sentences[0], sentences[1]))
+    print(sc.similarity_distance(sentences[0], sentences[1]))    # 0.679
+    """
+    Model load time cost:123.91857814788818
+    0.679
+    """
 
 
 if __name__ == "__main__":
