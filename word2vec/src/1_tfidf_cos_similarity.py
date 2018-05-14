@@ -22,7 +22,7 @@ import jieba.analyse
 
 def get_keywords(article):
     """
-    :param article: <str>.
+    :param article: <str>. 无需分词
     :return: <list of tuple>.
     """
     # 通过TF-IDF算法提取关键词
